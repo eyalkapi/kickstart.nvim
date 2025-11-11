@@ -527,6 +527,16 @@ require('lazy').setup({
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          -- Override default lsp documentation
+          -- Exits popup when switching buffer, overrides KK 'enter popup' functionality
+          map('K', function()
+            vim.lsp.buf.hover {
+              border = 'rounded',
+              close_events = { 'CursorMoved', 'BufLeave', 'WinLeave' },
+              focusable = false,
+            }
+          end, 'Hover Documentation')
+
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
